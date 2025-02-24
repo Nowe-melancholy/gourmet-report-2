@@ -3,7 +3,12 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun run --watch index.ts",
+    "generate": "drizzle-kit generate",
+    "migrate:local": "wrangler d1 execute gourmet-report-db --file=./migrations/latest.sql",
+    "migrate:prod": "wrangler d1 execute gourmet-report-db --file=./migrations/latest.sql --remote",
+    "migrate": "bun run migrate:local && bun run migrate:prod",
+    "dev": "wrangler dev src/app.ts",
+    "deploy": "wrangler deploy",
     "lint": "biome lint .",
     "format": "biome format . --write"
   },
@@ -12,14 +17,15 @@
     "@cloudflare/workers-types": "^4.20250214.0",
     "@types/bun": "latest",
     "bun-types": "latest",
-    "drizzle-kit": "^0.30.4"
+    "drizzle-kit": "^0.20.18",
+    "wrangler": "^3.109.3"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
-    "drizzle-orm": "^0.39.3",
+    "drizzle-orm": "^0.29.5",
     "hono": "^4.7.2",
     "ulid": "^2.3.0"
   }

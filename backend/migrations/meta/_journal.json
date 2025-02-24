@@ -15,6 +15,13 @@
       "when": 1740401165953,
       "tag": "0001_dark_darkstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1740405034080,
+      "tag": "0002_futuristic_emma_frost",
+      "breakpoints": true
     }
   ]
 }

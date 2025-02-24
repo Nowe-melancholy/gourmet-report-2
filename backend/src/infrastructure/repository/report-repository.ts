@@ -11,6 +11,7 @@ export class ReportRepository {
       id: report.getId(),
       itemName: report.getItemName(),
       shopName: report.getShopName(),
+      location: report.getLocation(),
       rating: report.getRating(),
     });
   }
@@ -26,11 +27,25 @@ export class ReportRepository {
       return null;
     }
 
-    return new Report(result.itemName, result.shopName, result.rating);
+    return Report.reconstruct(
+      result.id,
+      result.itemName,
+      result.shopName,
+      result.location,
+      result.rating
+    );
   }
 
   async findAll(): Promise<Report[]> {
     const results = await this.db.select().from(reports).all();
-    return results.map((result) => new Report(result.itemName, result.shopName, result.rating));
+    return results.map((result) =>
+      Report.reconstruct(
+        result.id,
+        result.itemName,
+        result.shopName,
+        result.location,
+        result.rating
+      )
+    );
   }
 } 

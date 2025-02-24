@@ -1,15 +1,33 @@
 import { ulid } from 'ulid';
 
 export class Report {
-  private readonly id: string;
-
-  constructor(
+  private constructor(
+    private readonly id: string,
     private readonly itemName: string,
     private readonly shopName: string,
+    private readonly location: string,
     private readonly rating: number,
   ) {
-    this.id = ulid();
     this.validateRating(rating);
+  }
+
+  public static create(
+    itemName: string,
+    shopName: string,
+    location: string,
+    rating: number,
+  ): Report {
+    return new Report(ulid(), itemName, shopName, location, rating);
+  }
+
+  public static reconstruct(
+    id: string,
+    itemName: string,
+    shopName: string,
+    location: string,
+    rating: number,
+  ): Report {
+    return new Report(id, itemName, shopName, location, rating);
   }
 
   private validateRating(rating: number): void {
@@ -32,6 +50,10 @@ export class Report {
 
   public getShopName(): string {
     return this.shopName;
+  }
+
+  public getLocation(): string {
+    return this.location;
   }
 
   public getRating(): number {
