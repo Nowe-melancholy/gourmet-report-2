@@ -1,0 +1,1 @@
+ALTER TABLE `reports` ADD `shop_name` text NOT NULL;

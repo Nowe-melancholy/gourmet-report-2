@@ -5,6 +5,7 @@ export class Report {
 
   constructor(
     private readonly itemName: string,
+    private readonly shopName: string,
     private readonly rating: number,
   ) {
     this.id = ulid();
@@ -27,6 +28,10 @@ export class Report {
 
   public getItemName(): string {
     return this.itemName;
+  }
+
+  public getShopName(): string {
+    return this.shopName;
   }
 
   public getRating(): number {

@@ -10,6 +10,7 @@ export class ReportRepository {
     await this.db.insert(reports).values({
       id: report.getId(),
       itemName: report.getItemName(),
+      shopName: report.getShopName(),
       rating: report.getRating(),
     });
   }
@@ -25,11 +26,11 @@ export class ReportRepository {
       return null;
     }
 
-    return new Report(result.itemName, result.rating);
+    return new Report(result.itemName, result.shopName, result.rating);
   }
 
   async findAll(): Promise<Report[]> {
     const results = await this.db.select().from(reports).all();
-    return results.map((result) => new Report(result.itemName, result.rating));
+    return results.map((result) => new Report(result.itemName, result.shopName, result.rating));
   }
 } 

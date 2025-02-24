@@ -8,6 +8,13 @@
       "when": 1740395910881,
       "tag": "0000_talented_firestar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1740401165953,
+      "tag": "0001_dark_darkstar",
+      "breakpoints": true
     }
   ]
 }
