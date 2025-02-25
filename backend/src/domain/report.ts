@@ -7,6 +7,7 @@ export class Report {
     private readonly shopName: string,
     private readonly location: string,
     private readonly rating: number,
+    private readonly imageUrl?: string,
   ) {
     this.validateRating(rating);
   }
@@ -16,8 +17,9 @@ export class Report {
     shopName: string,
     location: string,
     rating: number,
+    imageUrl?: string,
   ): Report {
-    return new Report(ulid(), itemName, shopName, location, rating);
+    return new Report(ulid(), itemName, shopName, location, rating, imageUrl);
   }
 
   public static reconstruct(
@@ -26,8 +28,9 @@ export class Report {
     shopName: string,
     location: string,
     rating: number,
+    imageUrl?: string,
   ): Report {
-    return new Report(id, itemName, shopName, location, rating);
+    return new Report(id, itemName, shopName, location, rating, imageUrl);
   }
 
   private validateRating(rating: number): void {
@@ -58,5 +61,9 @@ export class Report {
 
   public getRating(): number {
     return this.rating;
+  }
+
+  public getImageUrl(): string | undefined {
+    return this.imageUrl;
   }
 } 

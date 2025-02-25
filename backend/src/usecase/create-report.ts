@@ -6,6 +6,7 @@ export interface CreateReportCommand {
   shopName: string;
   location: string;
   rating: number;
+  imageUrl?: string;
 }
 
 export class CreateReportUseCase {
@@ -16,7 +17,8 @@ export class CreateReportUseCase {
       command.itemName,
       command.shopName,
       command.location,
-      command.rating
+      command.rating,
+      command.imageUrl
     );
     await this.reportRepository.save(report);
     return report.getId();

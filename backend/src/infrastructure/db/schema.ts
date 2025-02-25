@@ -7,5 +7,6 @@ export const reports = sqliteTable('reports', {
   shopName: text('shop_name').notNull(),
   location: text('location').notNull(),
   rating: real('rating').notNull(),
+  imageUrl: text('image_url'),
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
 }); 

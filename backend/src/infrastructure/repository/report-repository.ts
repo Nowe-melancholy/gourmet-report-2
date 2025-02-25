@@ -13,6 +13,7 @@ export class ReportRepository {
       shopName: report.getShopName(),
       location: report.getLocation(),
       rating: report.getRating(),
+      imageUrl: report.getImageUrl(),
     });
   }
 
@@ -32,7 +33,8 @@ export class ReportRepository {
       result.itemName,
       result.shopName,
       result.location,
-      result.rating
+      result.rating,
+      result.imageUrl ?? undefined
     );
   }
 
@@ -44,7 +46,8 @@ export class ReportRepository {
         result.itemName,
         result.shopName,
         result.location,
-        result.rating
+        result.rating,
+        result.imageUrl ?? undefined
       )
     );
   }
