@@ -2,7 +2,16 @@ name = "gourmet-report"
 main = "src/app.ts"
 compatibility_date = "2024-02-24"
 
+# 環境変数はwrangler.dev.tomlまたは.envファイルで管理します
+# [vars]
+# JWT_SECRET = "..."
+# ALLOWED_EMAIL = "..."
+
 [[d1_databases]]
 binding = "DB"
 database_name = "gourmet-report-db"
-database_id = "4cbcae02-f24f-4201-a5cc-f06a93fb4bd4" 
+database_id = "4cbcae02-f24f-4201-a5cc-f06a93fb4bd4"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "gourmet-report-images" 

@@ -7,6 +7,9 @@ export class Report {
     private readonly shopName: string,
     private readonly location: string,
     private readonly rating: number,
+    private readonly imageUrl?: string,
+    private readonly comment?: string,
+    private readonly date?: Date
   ) {
     this.validateRating(rating);
   }
@@ -16,8 +19,11 @@ export class Report {
     shopName: string,
     location: string,
     rating: number,
+    imageUrl?: string,
+    comment?: string,
+    date?: Date
   ): Report {
-    return new Report(ulid(), itemName, shopName, location, rating);
+    return new Report(ulid(), itemName, shopName, location, rating, imageUrl, comment, date);
   }
 
   public static reconstruct(
@@ -26,8 +32,11 @@ export class Report {
     shopName: string,
     location: string,
     rating: number,
+    imageUrl?: string,
+    comment?: string,
+    date?: Date
   ): Report {
-    return new Report(id, itemName, shopName, location, rating);
+    return new Report(id, itemName, shopName, location, rating, imageUrl, comment, date);
   }
 
   private validateRating(rating: number): void {
@@ -37,7 +46,7 @@ export class Report {
   }
 
   private isValidRatingStep(rating: number): boolean {
-    return rating * 2 % 1 === 0;
+    return (rating * 2) % 1 === 0;
   }
 
   public getId(): string {
@@ -59,4 +68,16 @@ export class Report {
   public getRating(): number {
     return this.rating;
   }
-} 
+
+  public getImageUrl(): string | undefined {
+    return this.imageUrl;
+  }
+
+  public getComment(): string | undefined {
+    return this.comment;
+  }
+
+  public getDate(): Date | undefined {
+    return this.date;
+  }
+}

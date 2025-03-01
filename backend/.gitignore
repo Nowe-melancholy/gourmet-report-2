@@ -100,7 +100,6 @@ web_modules/
 
 # dotenv environment variable files
 
-.env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -173,3 +172,20 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Additional dependencies
+.wrangler/
+
+# Environment variables
+.dev.vars
+wrangler.dev.toml
+
+# Build artifacts
+dist/
+.cloudflare/
+
+# Editor settings
+.vscode/
+
+# OS-specific files
+Thumbs.db

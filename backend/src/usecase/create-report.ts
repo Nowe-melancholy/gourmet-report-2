@@ -1,11 +1,14 @@
-import { Report } from "../domain/report";
-import { ReportRepository } from "../infrastructure/repository/report-repository";
+import { Report } from '../domain/report';
+import { ReportRepository } from '../infrastructure/repository/report-repository';
 
 export interface CreateReportCommand {
   itemName: string;
   shopName: string;
   location: string;
   rating: number;
+  imageUrl?: string;
+  comment?: string;
+  date?: Date;
 }
 
 export class CreateReportUseCase {
@@ -16,9 +19,12 @@ export class CreateReportUseCase {
       command.itemName,
       command.shopName,
       command.location,
-      command.rating
+      command.rating,
+      command.imageUrl,
+      command.comment,
+      command.date
     );
     await this.reportRepository.save(report);
     return report.getId();
   }
-} 
+}

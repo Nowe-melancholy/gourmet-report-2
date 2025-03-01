@@ -1,7 +1,7 @@
-import { eq } from "drizzle-orm";
-import type { DrizzleD1Database } from "../db/client";
-import { reports } from "../db/schema";
-import { Report } from "../../domain/report";
+import { eq } from 'drizzle-orm';
+import type { DrizzleD1Database } from '../db/client';
+import { reports } from '../db/schema';
+import { Report } from '../../domain/report';
 
 export class ReportRepository {
   constructor(private readonly db: DrizzleD1Database) {}
@@ -13,6 +13,9 @@ export class ReportRepository {
       shopName: report.getShopName(),
       location: report.getLocation(),
       rating: report.getRating(),
+      imageUrl: report.getImageUrl(),
+      comment: report.getComment(),
+      date: report.getDate()?.toISOString(),
     });
   }
 
@@ -32,7 +35,10 @@ export class ReportRepository {
       result.itemName,
       result.shopName,
       result.location,
-      result.rating
+      result.rating,
+      result.imageUrl ?? undefined,
+      result.comment ?? undefined,
+      result.date ? new Date(result.date) : undefined
     );
   }
 
@@ -44,8 +50,11 @@ export class ReportRepository {
         result.itemName,
         result.shopName,
         result.location,
-        result.rating
+        result.rating,
+        result.imageUrl ?? undefined,
+        result.comment ?? undefined,
+        result.date ? new Date(result.date) : undefined
       )
     );
   }
-} 
+}

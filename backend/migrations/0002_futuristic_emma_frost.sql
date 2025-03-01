@@ -1,1 +1,0 @@
-ALTER TABLE `reports` ADD `location` text NOT NULL;
