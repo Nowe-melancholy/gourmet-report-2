@@ -21,6 +21,5 @@
       "quoteStyle": "single",
       "trailingCommas": "es5"
     }
-  },
-  "extends": ["../packages/config/biome/biome.json"]
-}
+  }
+} 

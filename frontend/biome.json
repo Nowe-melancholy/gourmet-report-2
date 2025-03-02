@@ -1,24 +1,10 @@
 {
-  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true
-    }
-  },
+  "extends": "../packages/config/biome/biome.json",
   "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
     "lineWidth": 100
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single",
-      "trailingComma": "es5",
       "semicolons": "always"
     }
   }

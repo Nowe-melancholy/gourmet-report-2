@@ -1,9 +1,10 @@
 {
-  "name": "frontend",
+  "name": "@repo/frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "format": "biome format --write .",
@@ -12,7 +13,6 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
-    "backend": "file:../backend",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "hono": "^4.7.2",
@@ -22,7 +22,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "@repo/backend": "workspace:*"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

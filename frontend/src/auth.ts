@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { cookies } from 'next/headers';
 import { hc } from 'hono/client';
-import { HonoType } from 'backend';
+import { HonoType } from '@repo/backend';
 
 // セッションの型を拡張
 declare module 'next-auth' {
