@@ -11,7 +11,6 @@
     "check": "biome check --apply ."
   },
   "dependencies": {
-    "@hono/client": "^0.0.3",
     "@radix-ui/react-slot": "^1.1.2",
     "backend": "file:../backend",
     "class-variance-authority": "^0.7.1",
