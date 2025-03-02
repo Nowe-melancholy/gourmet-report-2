@@ -12,7 +12,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import { hc } from 'hono/client'
-import { HonoType } from 'backend'
+import { HonoType } from '@repo/backend';
 import { auth, signIn, signOut } from '@/auth'
 
 export const metadata: Metadata = {
