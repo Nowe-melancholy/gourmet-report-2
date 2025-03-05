@@ -9,6 +9,7 @@ import { createReportSchema } from './schema/report';
 import { signInSchema } from './schema/auth';
 import { auth } from './middleware/auth';
 import { GetReportsUseCase } from './usecase/get-reports';
+import { DeleteReportUseCase } from './usecase/delete-report';
 
 type Bindings = {
   DB: D1Database;
@@ -93,7 +94,28 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 
       return c.json({ id: reportId }, 201);
     }
-  );
+  )
+  .delete('/deleteReport/:id', async (c) => {
+    const id = c.req.param('id');
+    const user = c.get('user');
+
+    // 許可されたメールアドレス以外からのリクエストを拒否
+    if (user.email !== c.env.ALLOWED_EMAIL) {
+      return c.json({ message: 'Unauthorized' }, 403);
+    }
+
+    const db = createDrizzleD1(c.env.DB);
+    const repository = new ReportRepository(db);
+    const useCase = new DeleteReportUseCase(repository);
+    
+    const success = await useCase.execute(id);
+    
+    if (!success) {
+      return c.json({ message: 'Report not found' }, 404);
+    }
+    
+    return c.json({ message: 'Report deleted successfully' });
+  });
 
 const app = new Hono().route('/', commonRoute).route('/auth', authRoute);
 

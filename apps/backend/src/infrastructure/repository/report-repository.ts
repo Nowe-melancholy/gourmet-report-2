@@ -57,4 +57,9 @@ export class ReportRepository {
       )
     );
   }
+
+  async delete(id: string): Promise<boolean> {
+    const result = await this.db.delete(reports).where(eq(reports.id, id)).run();
+    return result.success;
+  }
 }
