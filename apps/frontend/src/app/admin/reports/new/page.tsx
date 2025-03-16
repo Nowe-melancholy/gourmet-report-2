@@ -10,6 +10,7 @@ import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { hc } from 'hono/client'
 import type { HonoType } from '@repo/backend'
+import ImageUploadPreview from '@/components/ImageUploadPreview'
 
 export const metadata: Metadata = {
   title: '新規グルメレポート作成',
@@ -46,7 +47,7 @@ export default async function NewReportPage() {
       const image = formData.get('image') as File
 
       // Hono Clientを使用
-      const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!)
+      const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL || '')
 
       const response = await client.auth.createReport.$post(
         {
@@ -121,7 +122,7 @@ export default async function NewReportPage() {
 
           <div className="space-y-2">
             <Label htmlFor="image">画像</Label>
-            <Input id="image" name="image" type="file" accept="image/*" />
+            <ImageUploadPreview />
           </div>
 
           <div className="space-y-2">

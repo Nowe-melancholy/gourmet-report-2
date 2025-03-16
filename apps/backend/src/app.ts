@@ -105,8 +105,30 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 
     const db = createDrizzleD1(c.env.DB)
     const repository = new ReportRepository(db)
+    
+    // 削除前にレポート情報を取得
+    const report = await repository.findById(id)
+    if (!report) {
+      return c.json({ message: 'Report not found' }, 404)
+    }
+    
+    // 画像URLがある場合、R2から画像を削除
+    const imageUrl = report.getImageUrl()
+    if (imageUrl) {
+      try {
+        // URLからキー名を抽出
+        const key = imageUrl.split('/').pop()
+        if (key) {
+          await c.env.BUCKET.delete(key)
+          console.log(`画像を削除しました: ${key}`)
+        }
+      } catch (error) {
+        console.error('画像削除エラー:', error)
+        // 画像削除に失敗してもレポート自体は削除を続行
+      }
+    }
+    
     const useCase = new DeleteReportUseCase(repository)
-
     const success = await useCase.execute(id)
 
     if (!success) {
