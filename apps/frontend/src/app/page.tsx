@@ -1,18 +1,12 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import { hc } from 'hono/client'
-import { HonoType } from '@repo/backend';
+import type { HonoType } from '@repo/backend'
 import { auth, signIn, signOut } from '@/auth'
 
 export const metadata: Metadata = {
@@ -41,10 +35,12 @@ export default async function Page() {
         {isAdmin ? (
           <div className="flex items-center gap-2">
             <span>管理者: {session.user.email}</span>
-            <form action={async () => {
-              'use server'
-              await signOut()
-            }}>
+            <form
+              action={async () => {
+                'use server'
+                await signOut()
+              }}
+            >
               <Button variant="outline">ログアウト</Button>
             </form>
             <Link href="/admin/reports">
@@ -52,10 +48,12 @@ export default async function Page() {
             </Link>
           </div>
         ) : (
-          <form action={async () => {
-            'use server'
-            await signIn('google')
-          }}>
+          <form
+            action={async () => {
+              'use server'
+              await signIn('google')
+            }}
+          >
             <Button>管理者ログイン</Button>
           </form>
         )}
@@ -66,12 +64,9 @@ export default async function Page() {
             key={report.id}
             report={{
               ...report,
-              date: `${report.date?.slice(
-                0,
-                4,
-              )}-${report.date?.slice(4, 6)}-${report.date?.slice(
+              date: `${report.date?.slice(0, 4)}-${report.date?.slice(4, 6)}-${report.date?.slice(
                 6,
-                8,
+                8
               )}`,
             }}
           />
@@ -121,14 +116,11 @@ const ReportCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {imageUrl ? <div className="aspect-video relative mb-4">
-          <Image
-            src={imageUrl}
-            alt={itemName}
-            fill
-            className="object-cover rounded-md"
-          />
-        </div> : null}
+        {imageUrl ? (
+          <div className="aspect-video relative mb-4">
+            <Image src={imageUrl} alt={itemName} fill className="object-cover rounded-md" />
+          </div>
+        ) : null}
         <p className="text-sm text-muted-foreground">{comment}</p>
       </CardContent>
       <CardFooter>

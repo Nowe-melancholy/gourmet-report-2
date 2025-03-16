@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const createReportSchema = {
   form: z.object({
@@ -13,4 +13,4 @@ export const createReportSchema = {
     comment: z.string().optional(),
     date: z.string().optional(),
   }),
-};
+}

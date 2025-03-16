@@ -1,11 +1,16 @@
 {
-  "extends": "../../packages/config/biome/biome.json",
+  "extends": ["../../packages/config/biome/biome.json"],
   "formatter": {
     "lineWidth": 100
   },
-  "javascript": {
-    "formatter": {
-      "semicolons": "always"
+  "linter": {
+    "rules": {
+      "style": {
+        "noNonNullAssertion": "off"
+      }
     }
+  },
+  "files": {
+    "ignore": ["node_modules", ".next", ".turbo"]
   }
-} 
+}

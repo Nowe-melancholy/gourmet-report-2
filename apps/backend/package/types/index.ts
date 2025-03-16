@@ -1,1 +1,1 @@
-export type { HonoType } from '../../src/app';
+export type { HonoType } from '../../src/app'

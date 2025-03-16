@@ -22,5 +22,8 @@
       "trailingCommas": "es5"
     }
   },
-  "extends": ["../../packages/config/biome/biome.json"]
+  "extends": ["../../packages/config/biome/biome.json"],
+  "files": {
+    "ignore": ["node_modules", ".turbo", ".wrangler"]
+  }
 }

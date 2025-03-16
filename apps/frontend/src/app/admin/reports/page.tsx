@@ -1,20 +1,16 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, Star, Pencil, Trash } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import { hc } from 'hono/client'
-import { HonoType } from '@repo/backend';
+import type { HonoType } from '@repo/backend'
 import { auth } from '@/auth'
+import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
   title: '管理者用グルメレポート一覧',
@@ -30,14 +26,49 @@ async function getReports() {
   return res.json()
 }
 
+async function deleteReport(formData: FormData) {
+  'use server'
+
+  const id = formData.get('id') as string
+
+  try {
+    const cookieStore = await cookies()
+    const authToken = cookieStore.get('auth-token')?.value
+
+    if (!authToken) {
+      console.error('認証エラー: トークンがありません')
+      return
+    }
+
+    // Hono Clientを使用
+    const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!)
+
+    // 動的パスパラメータを含むエンドポイントに対してリクエスト
+    const response = await client.auth.deleteReport[':id'].$delete(
+      { param: { id } },
+      { headers: { Authorization: `Bearer ${authToken}` } }
+    )
+
+    if (!response.ok) {
+      console.error('削除エラー:', await response.text())
+      return
+    }
+
+    revalidatePath('/')
+    revalidatePath('/admin/reports')
+  } catch (error) {
+    console.error('削除エラー:', error)
+  }
+}
+
 export default async function AdminReportsPage() {
   const session = await auth()
-  
+
   // 管理者でない場合はトップページにリダイレクト
   if (!session?.user?.isAdmin) {
     redirect('/')
   }
-  
+
   const data = await getReports()
 
   return (
@@ -53,25 +84,23 @@ export default async function AdminReportsPage() {
           </Link>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((report) => (
           <AdminReportCard
             key={report.id}
             report={{
               ...report,
-              date: `${report.date?.slice(
-                0,
-                4,
-              )}-${report.date?.slice(4, 6)}-${report.date?.slice(
+              date: `${report.date?.slice(0, 4)}-${report.date?.slice(4, 6)}-${report.date?.slice(
                 6,
-                8,
+                8
               )}`,
             }}
+            id={report.id}
           />
         ))}
       </div>
-      
+
       <div className="flex justify-center mt-8 gap-2">
         <Link href="/admin/reports?page=1">
           <Button variant="outline">
@@ -100,6 +129,7 @@ type AdminReportCardProps = {
     comment: string | undefined
     date: string
   }
+  id: string
 }
 
 const AdminReportCard = ({
@@ -117,14 +147,11 @@ const AdminReportCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {imageUrl ? <div className="aspect-video relative mb-4">
-          <Image
-            src={imageUrl}
-            alt={itemName}
-            fill
-            className="object-cover rounded-md"
-          />
-        </div> : null}
+        {imageUrl ? (
+          <div className="aspect-video relative mb-4">
+            <Image src={imageUrl} alt={itemName} fill className="object-cover rounded-md" />
+          </div>
+        ) : null}
         <p className="text-sm text-muted-foreground">{comment}</p>
       </CardContent>
       <CardFooter className="flex justify-between">
@@ -136,13 +163,9 @@ const AdminReportCard = ({
               編集
             </Button>
           </Link>
-          <form action={async () => {
-            'use server'
-            // 削除処理を実装
-            // const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!)
-            // await client.deleteReport.$post({ id })
-          }}>
-            <Button size="sm" variant="destructive">
+          <form action={deleteReport}>
+            <input type="hidden" name="id" value={id} />
+            <Button size="sm" variant="destructive" type="submit">
               <Trash className="h-4 w-4 mr-1" />
               削除
             </Button>
@@ -151,4 +174,4 @@ const AdminReportCard = ({
       </CardFooter>
     </Card>
   )
-} 
+}

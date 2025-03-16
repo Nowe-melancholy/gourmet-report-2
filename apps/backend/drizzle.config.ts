@@ -1,4 +1,4 @@
-import type { Config } from 'drizzle-kit';
+import type { Config } from 'drizzle-kit'
 
 export default {
   schema: './src/infrastructure/db/schema.ts',
@@ -6,4 +6,4 @@ export default {
   driver: 'better-sqlite',
   verbose: true,
   strict: true,
-} satisfies Config;
+} satisfies Config

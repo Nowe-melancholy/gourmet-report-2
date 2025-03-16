@@ -1,16 +1,16 @@
-import NextAuth from 'next-auth';
-import Google from 'next-auth/providers/google';
-import { cookies } from 'next/headers';
-import { hc } from 'hono/client';
-import { HonoType } from '@repo/backend';
+import NextAuth from 'next-auth'
+import Google from 'next-auth/providers/google'
+import { cookies } from 'next/headers'
+import { hc } from 'hono/client'
+import type { HonoType } from '@repo/backend'
 
 // セッションの型を拡張
 declare module 'next-auth' {
   interface Session {
     user: {
-      email?: string | null;
-      isAdmin?: boolean;
-    };
+      email?: string | null
+      isAdmin?: boolean
+    }
   }
 }
 
@@ -26,49 +26,49 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       try {
         // バックエンドのJWT認証を呼び出す
         if (user.email) {
-          const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!);
+          const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!)
           const response = await client.signIn.$post({
             json: { email: user.email },
-          });
+          })
 
           if (!response.ok) {
-            return false;
+            return false
           }
 
-          const data = await response.json();
-          
+          const data = await response.json()
+
           // JWTトークンをCookieに保存（サーバーサイドでのみ使用）
-          const cookieStore = await cookies();
+          const cookieStore = await cookies()
           cookieStore.set('auth-token', data.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 60 * 24 * 7, // 1週間
             path: '/',
             sameSite: 'lax',
-          });
-          
-          return true;
+          })
+
+          return true
         }
-        return false;
+        return false
       } catch (error) {
-        console.error('Sign in error:', error);
-        return false;
+        console.error('Sign in error:', error)
+        return false
       }
     },
     async session({ session }) {
       // Google認証に成功した場合は管理者とみなす
       // バックエンドの/signInエンドポイントで既に認証済み
       if (session.user) {
-        session.user.isAdmin = true;
+        session.user.isAdmin = true
       }
-      return session;
+      return session
     },
   },
   events: {
     async signOut() {
       // ログアウト時にCookieの認証情報を削除
-      const cookieStore = await cookies();
-      cookieStore.delete('auth-token');
+      const cookieStore = await cookies()
+      cookieStore.delete('auth-token')
     },
   },
-}); 
+})

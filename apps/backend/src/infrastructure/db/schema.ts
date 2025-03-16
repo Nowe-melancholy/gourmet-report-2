@@ -1,5 +1,5 @@
-import { sql } from 'drizzle-orm';
-import { real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm'
+import { real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const reports = sqliteTable('reports', {
   id: text('id').primaryKey(),
@@ -11,4 +11,4 @@ export const reports = sqliteTable('reports', {
   comment: text('comment'),
   date: text('date').default(sql`CURRENT_TIMESTAMP`).notNull(),
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
+})

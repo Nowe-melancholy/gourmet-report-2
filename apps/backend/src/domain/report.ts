@@ -1,5 +1,3 @@
-import { ulid } from 'ulid';
-
 export class Report {
   private constructor(
     private readonly id: string,
@@ -11,10 +9,11 @@ export class Report {
     private readonly comment?: string,
     private readonly date?: Date
   ) {
-    this.validateRating(rating);
+    this.validateRating(rating)
   }
 
   public static create(
+    id: string,
     itemName: string,
     shopName: string,
     location: string,
@@ -23,7 +22,16 @@ export class Report {
     comment?: string,
     date?: Date
   ): Report {
-    return new Report(ulid(), itemName, shopName, location, rating, imageUrl, comment, date);
+    return new Report(
+      id,
+      itemName,
+      shopName,
+      location,
+      rating,
+      imageUrl,
+      comment,
+      date
+    )
   }
 
   public static reconstruct(
@@ -36,48 +44,57 @@ export class Report {
     comment?: string,
     date?: Date
   ): Report {
-    return new Report(id, itemName, shopName, location, rating, imageUrl, comment, date);
+    return new Report(
+      id,
+      itemName,
+      shopName,
+      location,
+      rating,
+      imageUrl,
+      comment,
+      date
+    )
   }
 
   private validateRating(rating: number): void {
     if (rating < 1 || rating > 5 || !this.isValidRatingStep(rating)) {
-      throw new Error('Rating must be between 1 and 5 with 0.5 steps');
+      throw new Error('Rating must be between 1 and 5 with 0.5 steps')
     }
   }
 
   private isValidRatingStep(rating: number): boolean {
-    return (rating * 2) % 1 === 0;
+    return (rating * 2) % 1 === 0
   }
 
   public getId(): string {
-    return this.id;
+    return this.id
   }
 
   public getItemName(): string {
-    return this.itemName;
+    return this.itemName
   }
 
   public getShopName(): string {
-    return this.shopName;
+    return this.shopName
   }
 
   public getLocation(): string {
-    return this.location;
+    return this.location
   }
 
   public getRating(): number {
-    return this.rating;
+    return this.rating
   }
 
   public getImageUrl(): string | undefined {
-    return this.imageUrl;
+    return this.imageUrl
   }
 
   public getComment(): string | undefined {
-    return this.comment;
+    return this.comment
   }
 
   public getDate(): Date | undefined {
-    return this.date;
+    return this.date
   }
 }

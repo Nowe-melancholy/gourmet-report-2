@@ -1,14 +1,14 @@
-import { Report } from '../domain/report';
-import { ReportRepository } from '../infrastructure/repository/report-repository';
+import { Report } from '../domain/report'
+import type { ReportRepository } from '../infrastructure/repository/report-repository'
 
 export interface CreateReportCommand {
-  itemName: string;
-  shopName: string;
-  location: string;
-  rating: number;
-  imageUrl?: string;
-  comment?: string;
-  date?: Date;
+  itemName: string
+  shopName: string
+  location: string
+  rating: number
+  imageUrl?: string
+  comment?: string
+  date?: Date
 }
 
 export class CreateReportUseCase {
@@ -16,6 +16,7 @@ export class CreateReportUseCase {
 
   async execute(command: CreateReportCommand): Promise<string> {
     const report = Report.create(
+      crypto.randomUUID(),
       command.itemName,
       command.shopName,
       command.location,
@@ -23,8 +24,8 @@ export class CreateReportUseCase {
       command.imageUrl,
       command.comment,
       command.date
-    );
-    await this.reportRepository.save(report);
-    return report.getId();
+    )
+    await this.reportRepository.save(report)
+    return report.getId()
   }
 }
