@@ -71,7 +71,7 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
       }
 
       let imageUrl: string | undefined
-      if (image) {
+      if (image && image.size > 0) {
         const key = `${Date.now()}-${image.name}`
         await c.env.BUCKET.put(key, image)
         imageUrl = `https://gourmet-report-images.jackpot88230021.workers.dev/${key}`
