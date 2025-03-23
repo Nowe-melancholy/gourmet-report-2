@@ -11,7 +11,7 @@ import { hc } from 'hono/client'
 import type { HonoType } from '@repo/backend'
 import ImageUploadPreview from '@/components/ImageUploadPreview'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { SPACIOUSNESS } from '../page'
+
 
 export const metadata: Metadata = {
   title: '新規グルメレポート作成',

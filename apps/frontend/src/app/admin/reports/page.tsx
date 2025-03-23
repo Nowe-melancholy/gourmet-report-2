@@ -13,30 +13,30 @@ import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 
 // 広さの定数（バックエンドと同じ値を使用）
-export const SPACIOUSNESS = {
+const SPACIOUSNESS = {
   wide: 1,
   narrow: 2,
 } as const
 
-export type Spaciousness = typeof SPACIOUSNESS[keyof typeof SPACIOUSNESS]
+type Spaciousness = typeof SPACIOUSNESS[keyof typeof SPACIOUSNESS]
 
 // 綺麗さの定数（バックエンドと同じ値を使用）
-export const CLEANLINESS = {
+const CLEANLINESS = {
   clean: 1,
   dirty: 2,
 } as const
 
-export type Cleanliness = typeof CLEANLINESS[keyof typeof CLEANLINESS]
+type Cleanliness = typeof CLEANLINESS[keyof typeof CLEANLINESS]
 
 // ゆっくり度の定数（バックエンドと同じ値を使用）
-export const RELAXATION = {
+const RELAXATION = {
   relaxed: 1,
   busy: 2,
 } as const
 
-export type Relaxation = typeof RELAXATION[keyof typeof RELAXATION]
+type Relaxation = typeof RELAXATION[keyof typeof RELAXATION]
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: '管理者用グルメレポート一覧',
   description: '管理者用グルメレポート一覧',
 }
