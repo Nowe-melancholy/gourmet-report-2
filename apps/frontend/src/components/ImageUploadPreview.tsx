@@ -59,16 +59,11 @@ export default function ImageUploadPreview() {
         onChange={handleFileChange}
         ref={fileInputRef}
       />
-      
+
       {preview && (
         <div className="mt-4 space-y-2">
           <div className="relative aspect-video w-full max-h-[300px] overflow-hidden rounded-md border border-gray-200">
-            <Image
-              src={preview}
-              alt="プレビュー"
-              fill
-              className="object-contain"
-            />
+            <Image src={preview} alt="プレビュー" fill className="object-contain" />
           </div>
           <button
             type="button"
@@ -81,4 +76,4 @@ export default function ImageUploadPreview() {
       )}
     </div>
   )
-} 
+}

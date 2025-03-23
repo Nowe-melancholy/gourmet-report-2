@@ -12,13 +12,37 @@ import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 
+// 広さの定数（バックエンドと同じ値を使用）
+export const SPACIOUSNESS = {
+  wide: 1,
+  narrow: 2,
+} as const
+
+export type Spaciousness = typeof SPACIOUSNESS[keyof typeof SPACIOUSNESS]
+
+// 綺麗さの定数（バックエンドと同じ値を使用）
+export const CLEANLINESS = {
+  clean: 1,
+  dirty: 2,
+} as const
+
+export type Cleanliness = typeof CLEANLINESS[keyof typeof CLEANLINESS]
+
+// ゆっくり度の定数（バックエンドと同じ値を使用）
+export const RELAXATION = {
+  relaxed: 1,
+  busy: 2,
+} as const
+
+export type Relaxation = typeof RELAXATION[keyof typeof RELAXATION]
+
 export const metadata: Metadata = {
   title: '管理者用グルメレポート一覧',
   description: '管理者用グルメレポート一覧',
 }
 
 async function getReports() {
-  const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!)
+  const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL || '')
   const res = await client.getReports.$get()
   if (!res.ok) {
     throw new Error('Failed to fetch reports')
@@ -41,7 +65,7 @@ async function deleteReport(formData: FormData) {
     }
 
     // Hono Clientを使用
-    const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL!)
+    const client = hc<HonoType>(process.env.NEXT_PUBLIC_API_URL || '')
 
     // 動的パスパラメータを含むエンドポイントに対してリクエスト
     const response = await client.auth.deleteReport[':id'].$delete(
@@ -126,6 +150,9 @@ type AdminReportCardProps = {
     itemName: string
     imageUrl: string | undefined
     rating: number
+    spaciousness: number | undefined
+    cleanliness: number | undefined
+    relaxation: number | undefined
     comment: string | undefined
     date: string
   }
@@ -133,7 +160,18 @@ type AdminReportCardProps = {
 }
 
 const AdminReportCard = ({
-  report: { id, shopName, itemName, imageUrl, rating, comment, date },
+  report: {
+    id,
+    shopName,
+    itemName,
+    imageUrl,
+    rating,
+    spaciousness,
+    cleanliness,
+    relaxation,
+    comment,
+    date,
+  },
 }: AdminReportCardProps) => {
   return (
     <Card className="w-full">
@@ -152,6 +190,32 @@ const AdminReportCard = ({
             <Image src={imageUrl} alt={itemName} fill className="object-cover rounded-md" />
           </div>
         ) : null}
+        <div className="grid grid-cols-3 gap-2 mb-3">
+          {spaciousness && (
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-muted-foreground">広さ</span>
+              <Badge variant="outline" className="flex items-center gap-1">
+                {spaciousness === SPACIOUSNESS.wide ? '広い' : '狭い'}
+              </Badge>
+            </div>
+          )}
+          {cleanliness && (
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-muted-foreground">綺麗さ</span>
+              <Badge variant="outline" className="flex items-center gap-1">
+                {cleanliness === CLEANLINESS.clean ? '綺麗' : '汚い'}
+              </Badge>
+            </div>
+          )}
+          {relaxation && (
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-muted-foreground">ゆっくり度</span>
+              <Badge variant="outline" className="flex items-center gap-1">
+                {relaxation === RELAXATION.relaxed ? 'ゆっくりできる' : '忙しい'}
+              </Badge>
+            </div>
+          )}
+        </div>
         <p className="text-sm text-muted-foreground">{comment}</p>
       </CardContent>
       <CardFooter className="flex justify-between">

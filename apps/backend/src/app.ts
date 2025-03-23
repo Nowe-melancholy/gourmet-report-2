@@ -48,6 +48,9 @@ const commonRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
         shopName: r.getShopName(),
         location: r.getLocation(),
         rating: r.getRating(),
+        spaciousness: r.getSpaciousness(),
+        cleanliness: r.getCleanliness(),
+        relaxation: r.getRelaxation(),
         imageUrl: r.getImageUrl(),
         comment: r.getComment(),
         date: r.getDate()?.toISOString().split('T')[0].replace(/-/g, ''),
@@ -61,8 +64,18 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
     '/createReport',
     zValidator('form', createReportSchema.form),
     async (c) => {
-      const { itemName, shopName, location, rating, image, comment, date } =
-        c.req.valid('form')
+      const {
+        itemName,
+        shopName,
+        location,
+        rating,
+        spaciousness,
+        cleanliness,
+        relaxation,
+        image,
+        comment,
+        date,
+      } = c.req.valid('form')
       const payload = c.get('jwtPayload')
 
       // 許可されたメールアドレス以外からのリクエストを拒否
@@ -86,6 +99,9 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
         shopName,
         location,
         rating,
+        spaciousness,
+        cleanliness,
+        relaxation,
         imageUrl,
         comment,
         date: date ? new Date(date) : undefined,
@@ -105,13 +121,13 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 
     const db = createDrizzleD1(c.env.DB)
     const repository = new ReportRepository(db)
-    
+
     // 削除前にレポート情報を取得
     const report = await repository.findById(id)
     if (!report) {
       return c.json({ message: 'Report not found' }, 404)
     }
-    
+
     // 画像URLがある場合、R2から画像を削除
     const imageUrl = report.getImageUrl()
     if (imageUrl) {
@@ -127,7 +143,7 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
         // 画像削除に失敗してもレポート自体は削除を続行
       }
     }
-    
+
     const useCase = new DeleteReportUseCase(repository)
     const success = await useCase.execute(id)
 

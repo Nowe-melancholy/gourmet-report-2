@@ -1,11 +1,14 @@
-import { Report } from '../domain/report'
+import { Report, type Cleanliness, type Relaxation, type Spaciousness } from '../domain/report'
 import type { ReportRepository } from '../infrastructure/repository/report-repository'
 
-export interface CreateReportCommand {
+type CreateReportParams = {
   itemName: string
   shopName: string
   location: string
   rating: number
+  spaciousness?: Spaciousness
+  cleanliness?: Cleanliness
+  relaxation?: Relaxation
   imageUrl?: string
   comment?: string
   date?: Date
@@ -14,18 +17,23 @@ export interface CreateReportCommand {
 export class CreateReportUseCase {
   constructor(private readonly reportRepository: ReportRepository) {}
 
-  async execute(command: CreateReportCommand): Promise<string> {
+  async execute(params: CreateReportParams): Promise<string> {
+    const id = crypto.randomUUID()
     const report = Report.create(
-      crypto.randomUUID(),
-      command.itemName,
-      command.shopName,
-      command.location,
-      command.rating,
-      command.imageUrl,
-      command.comment,
-      command.date
+      id,
+      params.itemName,
+      params.shopName,
+      params.location,
+      params.rating,
+      params.spaciousness,
+      params.cleanliness,
+      params.relaxation,
+      params.imageUrl,
+      params.comment,
+      params.date
     )
+
     await this.reportRepository.save(report)
-    return report.getId()
+    return id
   }
 }

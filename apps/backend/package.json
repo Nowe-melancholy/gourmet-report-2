@@ -13,13 +13,14 @@
   "private": true,
   "scripts": {
     "generate": "drizzle-kit generate",
-    "migrate:local": "wrangler d1 execute gourmet-report-db --file=./migrations/latest.sql",
-    "migrate:prod": "wrangler d1 execute gourmet-report-db --file=./migrations/latest.sql --remote",
+    "migrate:local": "wrangler d1 execute gourmet-report-db",
+    "migrate:prod": "wrangler d1 execute gourmet-report-db --remote",
     "migrate": "bun run migrate:local && bun run migrate:prod",
     "dev": "wrangler dev src/app.ts",
     "deploy": "wrangler deploy",
     "lint": "biome lint .",
-    "format": "biome format . --write"
+    "format": "biome format --write .",
+    "check": "biome check --apply ."
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -27,7 +28,7 @@
     "@types/bun": "latest",
     "bun-types": "latest",
     "drizzle-kit": "^0.20.18",
-    "wrangler": "^3.109.3"
+    "wrangler": "^4.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
@@ -37,7 +38,6 @@
     "@libsql/client": "^0.14.0",
     "drizzle-orm": "^0.29.5",
     "hono": "^4.7.2",
-    "ulid": "^2.3.0",
     "zod": "^3.24.2"
   }
 }
