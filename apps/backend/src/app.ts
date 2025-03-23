@@ -16,6 +16,7 @@ type Bindings = {
   BUCKET: R2Bucket
   JWT_SECRET: string
   ALLOWED_EMAIL: string
+  R2_DOMAIN: string
 }
 
 type Variables = {
@@ -87,7 +88,7 @@ const authRoute = new Hono<{ Bindings: Bindings; Variables: Variables }>()
       if (image && image.size > 0) {
         const key = `${Date.now()}-${image.name}`
         await c.env.BUCKET.put(key, image)
-        imageUrl = `https://gourmet-report-images.jackpot88230021.workers.dev/${key}`
+        imageUrl = `${c.env.R2_DOMAIN}${key}`
       }
 
       const db = createDrizzleD1(c.env.DB)

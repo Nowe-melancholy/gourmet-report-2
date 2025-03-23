@@ -69,34 +69,6 @@ export class Report {
     )
   }
 
-  public static reconstruct(
-    id: string,
-    itemName: string,
-    shopName: string,
-    location: string,
-    rating: number,
-    spaciousness?: Spaciousness,
-    cleanliness?: Cleanliness,
-    relaxation?: Relaxation,
-    imageUrl?: string,
-    comment?: string,
-    date?: Date
-  ): Report {
-    return new Report(
-      id,
-      itemName,
-      shopName,
-      location,
-      rating,
-      spaciousness,
-      cleanliness,
-      relaxation,
-      imageUrl,
-      comment,
-      date
-    )
-  }
-
   private validateRating(rating: number): void {
     if (rating < 1 || rating > 5 || !this.isValidRatingStep(rating)) {
       throw new Error('Rating must be between 1 and 5 with 0.5 steps')

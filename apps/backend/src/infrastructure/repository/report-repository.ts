@@ -53,7 +53,7 @@ export class ReportRepository {
     const cleanliness = result.cleanliness
     const relaxation = result.relaxation
 
-    return Report.reconstruct(
+    return Report.create(
       result.id,
       result.itemName,
       result.shopName,
@@ -75,7 +75,7 @@ export class ReportRepository {
       const cleanliness = result.cleanliness
       const relaxation = result.relaxation
 
-      return Report.reconstruct(
+      return Report.create(
         result.id,
         result.itemName,
         result.shopName,
