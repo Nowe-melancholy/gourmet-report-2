@@ -86,13 +86,6 @@ async function deleteReport(formData: FormData) {
 }
 
 export default async function AdminReportsPage() {
-  const session = await auth()
-
-  // 管理者でない場合はトップページにリダイレクト
-  if (!session?.user?.isAdmin) {
-    redirect('/')
-  }
-
   const data = await getReports()
 
   return (

@@ -19,13 +19,6 @@ export const metadata: Metadata = {
 }
 
 export default async function NewReportPage() {
-  const session = await auth()
-
-  // 管理者でない場合はトップページにリダイレクト
-  if (!session?.user?.isAdmin) {
-    redirect('/')
-  }
-
   async function createReport(formData: FormData) {
     'use server'
 
